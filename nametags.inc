@@ -24,7 +24,6 @@
 #endif
 #define _nametags_included
 
-// Dependencies
 #if !defined _samp_included
     #error "Please include a_samp before nametags"
 #endif
@@ -36,8 +35,6 @@
 #if !defined _YSI_y_timers
     #tryinclude <YSI_Coding\y_timers>
 #endif
-
-// CONFIGURATION
 
 #if !defined NAMETAG_DRAW_DISTANCE
     #define NAMETAG_DRAW_DISTANCE   25.0
@@ -62,8 +59,6 @@
 #if !defined NAMETAG_UPDATE_RATE
     #define NAMETAG_UPDATE_RATE     1000        // Update rate (ms)
 #endif
-
-// VARIABLES
 
 enum E_NAMETAG_DATA 
 {
