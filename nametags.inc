@@ -41,19 +41,19 @@
 #endif
 
 #if !defined NAMETAG_COLOR_DEFAULT
-    #define NAMETAG_COLOR_DEFAULT   0xFFFFFFFF  // Putih
+    #define NAMETAG_COLOR_DEFAULT   0xFFFFFFFF  // White
 #endif
 
 #if !defined NAMETAG_COLOR_DAMAGE
-    #define NAMETAG_COLOR_DAMAGE    0xFF0000FF  // Merah
+    #define NAMETAG_COLOR_DAMAGE    0xFF0000FF  // Red
 #endif
 
 #if !defined NAMETAG_HEIGHT_OFFSET
-    #define NAMETAG_HEIGHT_OFFSET   0.75        // Offset tinggi dari kepala
+    #define NAMETAG_HEIGHT_OFFSET   0.75        // High offset from the head
 #endif
 
 #if !defined DAMAGE_FLASH_TIME
-    #define DAMAGE_FLASH_TIME       500         // Durasi flash merah (ms)
+    #define DAMAGE_FLASH_TIME       500         // Red flash duration (ms)
 #endif
 
 #if !defined NAMETAG_UPDATE_RATE
@@ -75,7 +75,8 @@ forward NT_OnPlayerConnect(playerid);
 forward NT_OnPlayerDisconnect(playerid, reason);
 forward NT_OnPlayerSpawn(playerid);
 
-public OnGameModeInit() {
+public OnGameModeInit() 
+{
     ShowPlayerMarkers(PLAYER_MARKERS_MODE_OFF);
     
     #if defined NT_OnGameModeInit
@@ -85,7 +86,8 @@ public OnGameModeInit() {
     #endif
 }
 
-public OnPlayerConnect(playerid) {
+public OnPlayerConnect(playerid) 
+{
     PlayerNametagData[playerid][NT_Damaged] = false;
     PlayerNametagData[playerid][NT_LastHealth] = 100.0;
     PlayerNametagData[playerid][NT_LastArmour] = 0.0;
@@ -100,7 +102,8 @@ public OnPlayerConnect(playerid) {
     #endif
 }
 
-public OnPlayerDisconnect(playerid, reason) {
+public OnPlayerDisconnect(playerid, reason) 
+{
     Nametag_Destroy(playerid);
     
     #if defined NT_OnPlayerDisconnect
@@ -110,7 +113,8 @@ public OnPlayerDisconnect(playerid, reason) {
     #endif
 }
 
-public OnPlayerSpawn(playerid) {
+public OnPlayerSpawn(playerid) 
+{
     Nametag_Update(playerid);
     PlayerNametagData[playerid][NT_LastHealth] = 100.0;
     PlayerNametagData[playerid][NT_LastArmour] = 0.0;
@@ -122,18 +126,20 @@ public OnPlayerSpawn(playerid) {
     #endif
 }
 
-task UpdateNameTag[NAMETAG_UPDATE_RATE]() {
+task UpdateNameTag[NAMETAG_UPDATE_RATE]() 
+{
     new Float:health, Float:armour;
     
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) {
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
+    {
         if(!IsPlayerConnected(i)) continue;
         if(GetPlayerState(i) == PLAYER_STATE_NONE) continue;
         
         GetPlayerHealth(i, health);
         GetPlayerArmour(i, armour);
         
-        // Deteksi damage
-        if(health < PlayerNametagData[i][NT_LastHealth] || armour < PlayerNametagData[i][NT_LastArmour]) {
+        if(health < PlayerNametagData[i][NT_LastHealth] || armour < PlayerNametagData[i][NT_LastArmour]) 
+        {
             Nametag_OnDamage(i);
         }
         
@@ -142,18 +148,22 @@ task UpdateNameTag[NAMETAG_UPDATE_RATE]() {
     }
 }
 
-task ResetNametagColor[DAMAGE_FLASH_TIME]() {
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) {
+task ResetNametagColor[DAMAGE_FLASH_TIME]() 
+{
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
+    {
         if(!IsPlayerConnected(i)) continue;
         
-        if(PlayerNametagData[i][NT_Damaged]) {
+        if(PlayerNametagData[i][NT_Damaged]) 
+        {
             PlayerNametagData[i][NT_Damaged] = false;
             Nametag_SetColor(i, NAMETAG_COLOR_DEFAULT);
         }
     }
 }
 
-stock Nametag_Create(playerid) {
+stock Nametag_Create(playerid) 
+{
     if(!IsPlayerConnected(playerid)) return 0;
     
     new name[MAX_PLAYER_NAME], cleanName[MAX_PLAYER_NAME];
@@ -161,7 +171,8 @@ stock Nametag_Create(playerid) {
     
     Nametag_RemoveUnderscore(name, cleanName, sizeof(cleanName));
     
-    if(IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) {
+    if(IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) 
+    {
         DestroyDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label]);
     }
     
@@ -180,8 +191,10 @@ stock Nametag_Create(playerid) {
     return 1;
 }
 
-stock Nametag_Destroy(playerid) {
-    if(IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) {
+stock Nametag_Destroy(playerid) 
+{
+    if(IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) 
+    {
         DestroyDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label]);
         PlayerNametagData[playerid][NT_Label] = Text3D:INVALID_3DTEXT_ID;
         return 1;
@@ -189,7 +202,8 @@ stock Nametag_Destroy(playerid) {
     return 0;
 }
 
-stock Nametag_Update(playerid) {
+stock Nametag_Update(playerid) 
+{
     if(!IsPlayerConnected(playerid)) return 0;
     if(!IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) return 0;
     
@@ -206,7 +220,8 @@ stock Nametag_Update(playerid) {
     return 1;
 }
 
-stock Nametag_SetColor(playerid, color) {
+stock Nametag_SetColor(playerid, color) 
+{
     if(!IsPlayerConnected(playerid)) return 0;
     if(!IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) return 0;
     
@@ -223,22 +238,26 @@ stock Nametag_SetColor(playerid, color) {
     return 1;
 }
 
-stock Nametag_OnDamage(playerid) {
+stock Nametag_OnDamage(playerid) 
+{
     PlayerNametagData[playerid][NT_Damaged] = true;
     Nametag_SetColor(playerid, NAMETAG_COLOR_DAMAGE);
     return 1;
 }
 
-stock Nametag_RemoveUnderscore(const input[], output[], maxlength = sizeof(output)) {
+stock Nametag_RemoveUnderscore(const input[], output[], maxlength = sizeof(output)) 
+{
     new pos = 0;
-    for(new i = 0; input[i] != EOS && pos < maxlength - 1; i++) {
+    for(new i = 0; input[i] != EOS && pos < maxlength - 1; i++) 
+    {
         output[pos++] = (input[i] == '_') ? ' ' : input[i];
     }
     output[pos] = EOS;
     return 1;
 }
 
-stock Nametag_SetDrawDistance(playerid, Float:distance) {
+stock Nametag_SetDrawDistance(playerid, Float:distance) 
+{
     if(!IsPlayerConnected(playerid)) return 0;
     if(!IsValidDynamic3DTextLabel(PlayerNametagData[playerid][NT_Label])) return 0;
     
@@ -246,7 +265,8 @@ stock Nametag_SetDrawDistance(playerid, Float:distance) {
     return 1;
 }
 
-stock Text3D:Nametag_GetLabel(playerid) {
+stock Text3D:Nametag_GetLabel(playerid) 
+{
     if(!IsPlayerConnected(playerid)) return Text3D:INVALID_3DTEXT_ID;
     return PlayerNametagData[playerid][NT_Label];
 }
