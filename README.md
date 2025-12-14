@@ -1,27 +1,32 @@
 # Custom-Name-Tags-SA-MP
 
-🎯 Fitur Utama
-1. Penghapusan Underscore
-Nama pemain yang tadinya Jackson_Whayn akan ditampilkan sebagai Jackson Whayn (dengan spasi)
-Membuat tampilan nama lebih natural dan mudah dibaca
-Fungsi Nametag_RemoveUnderscore() yang otomatis memproses nama
-2. Posisi Stabil
-Menggunakan Attached 3D Text Label yang menempel pada player
-Tidak akan turun/bergerak saat player didekati (masalah umum di nametag biasa)
-Offset tinggi dapat dikustomisasi via NAMETAG_HEIGHT_OFFSET
-Selalu mengikuti posisi player dengan sempurna
-3. Visual Feedback Damage
-Otomatis berubah warna merah saat player terkena damage
-Kembali ke warna putih setelah beberapa milidetik (default 500ms)
-Memberikan feedback visual yang jelas saat combat
-Durasi flash dapat dikonfigurasi via DAMAGE_FLASH_TIME
-4. Deteksi Damage Otomatis
-Menggunakan task timer UpdateNameTag[1000] yang berjalan setiap 1 detik
-Membandingkan health & armour saat ini dengan yang sebelumnya
-Jika ada penurunan = player terkena damage
-Tidak memerlukan callback OnPlayerTakeDamage
-5. Optimasi Performa
-Menggunakan YSI y_timers untuk task management yang efisien
-Loop hanya untuk player yang online (GetPlayerPoolSize())
-Skip player yang belum spawn (PLAYER_STATE_NONE)
-Minimal overhead pada server performance
+🎯 Main Features
+
+1. Underscore Removal
+Player names that were previously displayed as Jackson_Whayn will now appear as Jackson Whayn (with a space).
+This makes names look more natural and easier to read.
+The Nametag_RemoveUnderscore() function automatically processes player names.
+
+2. Stable Positioning
+Uses an Attached 3D Text Label that is attached directly to the player.
+It will not drop or shift when another player gets close (a common issue with standard nametags).
+The height offset can be customized via NAMETAG_HEIGHT_OFFSET.
+Always follows the player’s position perfectly.
+
+3. Damage Visual Feedback
+Automatically changes color to red when a player takes damage.
+Returns to white after a few milliseconds (default: 500 ms).
+Provides clear visual feedback during combat.
+The flash duration can be configured via DAMAGE_FLASH_TIME.
+
+4. Automatic Damage Detection
+Uses a timer task UpdateNameTag[1000] that runs every 1 second.
+Compares current health and armor with previous values.
+If there is a decrease, the player has taken damage.
+Does not require the OnPlayerTakeDamage callback.
+
+5. Performance Optimization
+Uses YSI y_timers for efficient task management.
+Loops only through online players (GetPlayerPoolSize()).
+Skips players who have not spawned yet (PLAYER_STATE_NONE).
+Minimal overhead on server performance.
